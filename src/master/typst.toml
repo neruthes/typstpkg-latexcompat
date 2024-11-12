@@ -1,0 +1,10 @@
+[package]
+name="latexcompat"
+version="0.1.0"
+entrypoint="latexcompat.typ"
+authors=["@Neruthes"]
+license="MIT"
+description="LaTeX compatibility commands within Typst."
+repository="https://github.com/neruthes/typstpkg-latexcompat"
+keywords=["latex"]
+categories=["utility"]
