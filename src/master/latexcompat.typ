@@ -1,7 +1,12 @@
-
-
-// Miscellaneous...
-#let hrulefill() = box(width: 1fr, stroke: (bottom: black))
+#let _calc_ext_mask_dec(value, position) = {
+  // _calc_ext_mask_dec(468, 1) = 8
+  // _calc_ext_mask_dec(468, 2) = 6
+  // _calc_ext_mask_dec(468, 3) = 4
+  let pow = calc.pow(10, position);
+  let rem = calc.rem-euclid(value, pow);
+  let my_result = (rem - calc.rem-euclid(value, pow/10) ) * 10 / pow;
+  return my_result;
+}
 #let _roman_font = state("fontspec_roman_font", none)
 #let _sans_font = state("fontspec_sans_font", none)
 #let _mono_font = state("fontspec_mono_font", none)
@@ -18,40 +23,50 @@
 
 
 
-
-#let setromanfont(font_name) = {
-  _roman_font.update(font_name)
+#let setromanfont(input_font_spec) = {
+  _roman_font.update(input_font_spec)
 }
 
-#let setsansfont(font_name) = {
-  _sans_font.update(font_name)
+#let setsansfont(input_font_spec) = {
+  _sans_font.update(input_font_spec)
 }
 
-#let setmonofont(font_name) = {
-  _mono_font.update(font_name)
+#let setmonofont(input_font_spec) = {
+  _mono_font.update(input_font_spec)
 }
 
-// #let textbf(content) = {
-//   text(weight: "bold", content)
-// }
+
+
+// NOTE: Mutating context aggressively might cause layout convergence warning
+
+// NOTE: Possible alternative approach: https://discord.com/channels/1054443721975922748/1391247361455689790/1391489700027695234
 
 #let textbf(content) = context {
   let tmp_flag = fontspec_flag_bf.get()
   [#bfseries();#content]
   fontspec_flag_bf.update(tmp_flag)
 }
-
 #let textmd(content) = context {
   let tmp_flag = fontspec_flag_bf.get()
   [#mdseries();#content]
   fontspec_flag_bf.update(tmp_flag)
 }
 
+#let textup(content) = context {
+  let tmp_flag = fontspec_flag_it.get()
+  [#upshape();#content]
+  fontspec_flag_it.update(tmp_flag)
+}
+#let textit(content) = context {
+  let tmp_flag = fontspec_flag_it.get()
+  [#itshape();#content]
+  fontspec_flag_it.update(tmp_flag)
+}
+
 
 #let textrm(content) = {
-  // Wrap the content that depends on `here()` in a `context` block
   context {
-    let font = _roman_font.at(here()) // `here()` is now valid within this context
+    let font = _roman_font.get()
     if font != none {
       text(font: font, content)
     } else {
@@ -61,9 +76,8 @@
 }
 
 #let textsf(content) = {
-  // Wrap the content that depends on `here()` in a `context` block
   context {
-    let font = _sans_font.at(here()) // `here()` is now valid within this context
+    let font = _sans_font.get()
     if font != none {
       text(font: font, content)
     } else {
@@ -73,9 +87,8 @@
 }
 
 #let texttt(content) = {
-  // Wrap the content that depends on `here()` in a `context` block
   context {
-    let font = _mono_font.at(here()) // `here()` is now valid within this context
+    let font = _mono_font.get()
     if font != none {
       text(font: font, content)
     } else {
@@ -84,25 +97,42 @@
   }
 }
 
-#let textup(content) = {
-  text(style: "normal", content)
-}
 
-#let textit(content) = {
-  text(style: "italic", content)
-}
-
-// Small caps not supported?
-// #let textsc(content) = {
-//   text(small-caps: true, content)
+// Really this this API?
+// #let fontsize(content) = {
+//   text(size: length, content)
 // }
 
 
 
 
-#let fontsize(content) = {
-  text(size: length, content)
+// Styling lambda mapping
+#let _fontspec_super_text_styler(mask, content) = context {
+  // ====================================================
+  // mask default value is 111 meaning rm/md/up
+  // 222 means sf/bf/it
+  // 3** means tt/*/*
+  // ====================================================
+  // Parse mask...
+  let f_rmsftt = _calc_ext_mask_dec(mask, 3)
+  let f_mdbf = _calc_ext_mask_dec(mask, 2)
+  let f_upit = _calc_ext_mask_dec(mask, 1)
+  // Default stylers
+  let tf_1 = textrm
+  let tf_2 = textmd
+  let tf_3 = textup
+  // Override stylers
+  if (f_rmsftt == 2) { tf_1 = textsf }
+  if (f_rmsftt == 3) { tf_1 = texttt }
+  if (f_mdbf == 2) { tf_2 = textbf }
+  if (f_upit == 2) { tf_3 = textit }
+  // tf_1[#tf_2[#tf_3[#content]]]
+  tf_1(tf_2(tf_3(content)))
 }
+
+
+// Miscellaneous...
+#let hrulefill() = box(width: 1fr, stroke: (bottom: black))
 
 // xcolor
 #let pagecolor(fill: color) = set page(fill: fill)
@@ -155,9 +185,61 @@
     v(1.5em)
   }
 }
-#let section(content) = textsf[#textbf[#text(size: 1.4em, content)]]
-#let subsection(content) = text(size: 1.15em, [#textbf(content)])
-#let subsubsection(content) = text(size: 1.09em, [#textbf(content)])
+// Counters
+#let fontspec_counter_sec_section = state("fontspec_counter_sec_section", 0)
+#let fontspec_counter_sec_subsection = state("fontspec_counter_sec_subsection", 0)
+#let fontspec_counter_sec_subsubsection = state("fontspec_counter_sec_subsubsection", 0)
+
+// Spacing
+#let fontspec_spacing_pre_h1 = state("fontspec_spacing_pre_h1", 1.3em)
+#let fontspec_spacing_pre_h2 = state("fontspec_spacing_pre_h2", 0.7em)
+#let fontspec_spacing_pre_h3 = state("fontspec_spacing_pre_h3", 0.3em)
+
+// Font size
+#let fontspec_fontsize_h1 = state("fontspec_fontsize_h1", 1.4em)
+#let fontspec_fontsize_h2 = state("fontspec_fontsize_h2", 1.15em)
+#let fontspec_fontsize_h3 = state("fontspec_fontsize_h3", 1.05em)
+
+// Font weight
+#let fontspec_h1_style = state("fontspec_h1_style", 121)
+#let fontspec_h2_style = state("fontspec_h2_style", 121)
+#let fontspec_h3_style = state("fontspec_h3_style", 121)
+
+
+
+
+
+
+#let section(numbered: true, content) = context {
+  v(fontspec_spacing_pre_h1.get())
+  text(size: fontspec_fontsize_h1.get(), [#_fontspec_super_text_styler(fontspec_h1_style.get(), [
+      #if (numbered) {
+        counter(heading).step(level: 1)
+        [#context {counter(heading).display()}. ]
+      }
+      #content
+    ])])
+}
+#let subsection(numbered: true, content) = context {
+  v(fontspec_spacing_pre_h2.get())
+  text(size: fontspec_fontsize_h2.get(), [#_fontspec_super_text_styler(fontspec_h2_style.get(), [
+      #if (numbered) {
+        counter(heading).step(level: 2)
+        [#context {counter(heading).display()}; ]
+      }
+      #content
+    ])])
+}
+#let subsubsection(numbered: true, content) = context {
+  v(fontspec_spacing_pre_h3.get())
+  text(size: fontspec_fontsize_h3.get(), [#_fontspec_super_text_styler(fontspec_h3_style.get(), [
+      #if (numbered) {
+        counter(heading).step(level: 3)
+        [#context {counter(heading).display()}; ]
+      }
+      #content
+    ])])
+}
 #let documentclass = () => {
   return it => context {
     set text(weight: if fontspec_flag_bf.get() { "bold" } else { "regular" }) if (fontspec_flag_bf.get() != none)

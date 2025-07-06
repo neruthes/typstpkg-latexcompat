@@ -14,40 +14,50 @@
 
 
 
-
-#let setromanfont(font_name) = {
-  _roman_font.update(font_name)
+#let setromanfont(input_font_spec) = {
+  _roman_font.update(input_font_spec)
 }
 
-#let setsansfont(font_name) = {
-  _sans_font.update(font_name)
+#let setsansfont(input_font_spec) = {
+  _sans_font.update(input_font_spec)
 }
 
-#let setmonofont(font_name) = {
-  _mono_font.update(font_name)
+#let setmonofont(input_font_spec) = {
+  _mono_font.update(input_font_spec)
 }
 
-// #let textbf(content) = {
-//   text(weight: "bold", content)
-// }
+
+
+// NOTE: Mutating context aggressively might cause layout convergence warning
+
+// NOTE: Possible alternative approach: https://discord.com/channels/1054443721975922748/1391247361455689790/1391489700027695234
 
 #let textbf(content) = context {
   let tmp_flag = fontspec_flag_bf.get()
   [#bfseries();#content]
   fontspec_flag_bf.update(tmp_flag)
 }
-
 #let textmd(content) = context {
   let tmp_flag = fontspec_flag_bf.get()
   [#mdseries();#content]
   fontspec_flag_bf.update(tmp_flag)
 }
 
+#let textup(content) = context {
+  let tmp_flag = fontspec_flag_it.get()
+  [#upshape();#content]
+  fontspec_flag_it.update(tmp_flag)
+}
+#let textit(content) = context {
+  let tmp_flag = fontspec_flag_it.get()
+  [#itshape();#content]
+  fontspec_flag_it.update(tmp_flag)
+}
+
 
 #let textrm(content) = {
-  // Wrap the content that depends on `here()` in a `context` block
   context {
-    let font = _roman_font.at(here()) // `here()` is now valid within this context
+    let font = _roman_font.get()
     if font != none {
       text(font: font, content)
     } else {
@@ -57,9 +67,8 @@
 }
 
 #let textsf(content) = {
-  // Wrap the content that depends on `here()` in a `context` block
   context {
-    let font = _sans_font.at(here()) // `here()` is now valid within this context
+    let font = _sans_font.get()
     if font != none {
       text(font: font, content)
     } else {
@@ -69,9 +78,8 @@
 }
 
 #let texttt(content) = {
-  // Wrap the content that depends on `here()` in a `context` block
   context {
-    let font = _mono_font.at(here()) // `here()` is now valid within this context
+    let font = _mono_font.get()
     if font != none {
       text(font: font, content)
     } else {
@@ -80,22 +88,36 @@
   }
 }
 
-#let textup(content) = {
-  text(style: "normal", content)
-}
 
-#let textit(content) = {
-  text(style: "italic", content)
-}
-
-// Small caps not supported?
-// #let textsc(content) = {
-//   text(small-caps: true, content)
+// Really this this API?
+// #let fontsize(content) = {
+//   text(size: length, content)
 // }
 
 
 
 
-#let fontsize(content) = {
-  text(size: length, content)
+// Styling lambda mapping
+#let _fontspec_super_text_styler(mask, content) = context {
+  // ====================================================
+  // mask default value is 111 meaning rm/md/up
+  // 222 means sf/bf/it
+  // 3** means tt/*/*
+  // ====================================================
+  // Parse mask...
+  let f_rmsftt = _calc_ext_mask_dec(mask, 3)
+  let f_mdbf = _calc_ext_mask_dec(mask, 2)
+  let f_upit = _calc_ext_mask_dec(mask, 1)
+  // Default stylers
+  let tf_1 = textrm
+  let tf_2 = textmd
+  let tf_3 = textup
+  // Override stylers
+  if (f_rmsftt == 2) { tf_1 = textsf }
+  if (f_rmsftt == 3) { tf_1 = texttt }
+  if (f_mdbf == 2) { tf_2 = textbf }
+  if (f_upit == 2) { tf_3 = textit }
+  tf_1(tf_2(tf_3(content)))
 }
+
+
