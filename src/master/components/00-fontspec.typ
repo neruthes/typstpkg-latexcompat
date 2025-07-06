@@ -1,11 +1,17 @@
 #let _roman_font = state("fontspec_roman_font", none)
 #let _sans_font = state("fontspec_sans_font", none)
 #let _mono_font = state("fontspec_mono_font", none)
-#let fontspec_base_fontsize = state("fontspec_base_fontsize", 10pt)
 
-#let setfontsize(size) = {
-  fontspec_base_fontsize.update(size)
-}
+// "series"
+#let fontspec_flag_bf = state("fontspec_flag_bf", none)
+#let bfseries() = context fontspec_flag_bf.update(true)
+#let mdseries() = context fontspec_flag_bf.update(false)
+
+// "shape"
+#let fontspec_flag_it = state("fontspec_flag_it", none)
+#let itshape() = context fontspec_flag_it.update(true)
+#let upshape() = context fontspec_flag_it.update(false)
+
 
 
 

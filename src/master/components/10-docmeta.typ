@@ -35,15 +35,14 @@
   context {
     align(center)[
       #textrm[
-        #text(size: fontspec_base_fontsize.at(here()) * 1.6)[#ATtitle]
+        #text(size: 1.6em)[#ATtitle]
         #v(-3pt)
 
-        #text(size: fontspec_base_fontsize.at(here()))[#ATauthor]
-        // #v(-2pt)
+        #text(size: 1em)[#ATauthor]
 
-        #text(size: fontspec_base_fontsize.at(here()))[#ATdate]
+        #text(size: 1em)[#ATdate]
       ]
     ]
-    v(fontspec_base_fontsize.at(here()) * 1.5)
+    v(1.5em)
   }
 }

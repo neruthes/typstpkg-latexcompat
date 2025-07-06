@@ -5,11 +5,17 @@
 #let _roman_font = state("fontspec_roman_font", none)
 #let _sans_font = state("fontspec_sans_font", none)
 #let _mono_font = state("fontspec_mono_font", none)
-#let fontspec_base_fontsize = state("fontspec_base_fontsize", 10pt)
 
-#let setfontsize(size) = {
-  fontspec_base_fontsize.update(size)
-}
+// "series"
+#let fontspec_flag_bf = state("fontspec_flag_bf", none)
+#let bfseries() = context fontspec_flag_bf.update(true)
+#let mdseries() = context fontspec_flag_bf.update(false)
+
+// "shape"
+#let fontspec_flag_it = state("fontspec_flag_it", none)
+#let itshape() = context fontspec_flag_it.update(true)
+#let upshape() = context fontspec_flag_it.update(false)
+
 
 
 
@@ -129,15 +135,26 @@
   context {
     align(center)[
       #textrm[
-        #text(size: fontspec_base_fontsize.at(here()) * 1.6)[#ATtitle]
+        #text(size: 1.6em)[#ATtitle]
         #v(-3pt)
 
-        #text(size: fontspec_base_fontsize.at(here()))[#ATauthor]
-        // #v(-2pt)
+        #text(size: 1em)[#ATauthor]
 
-        #text(size: fontspec_base_fontsize.at(here()))[#ATdate]
+        #text(size: 1em)[#ATdate]
       ]
     ]
-    v(fontspec_base_fontsize.at(here()) * 1.5)
+    v(1.5em)
   }
 }
+#let section(content) = textsf[#textbf[#text(size: 1.45em, content)]]
+#let subsection(content) = text(size: 1.31em, textsf[#textbf(content)])
+#let subsubsection(content) = textbf[#text(size: 1.1em, content)]
+#let documentclass = () => {
+  return it => context {
+    set text(weight: if fontspec_flag_bf.get() { "bold" } else { "regular" }) if (fontspec_flag_bf.get() != none)
+    set text(style: if fontspec_flag_it.get() { "italic" } else { "normal" }) if (fontspec_flag_it.get() != none)
+    it
+  }
+}
+
+
