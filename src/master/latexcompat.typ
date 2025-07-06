@@ -31,13 +31,22 @@
   _mono_font.update(font_name)
 }
 
-#let textbf(content) = {
-  text(weight: "bold", content)
+// #let textbf(content) = {
+//   text(weight: "bold", content)
+// }
+
+#let textbf(content) = context {
+  let tmp_flag = fontspec_flag_bf.get()
+  [#bfseries();#content]
+  fontspec_flag_bf.update(tmp_flag)
 }
 
-#let textmd(content) = {
-  text(weight: "regular", content)
+#let textmd(content) = context {
+  let tmp_flag = fontspec_flag_bf.get()
+  [#mdseries();#content]
+  fontspec_flag_bf.update(tmp_flag)
 }
+
 
 #let textrm(content) = {
   // Wrap the content that depends on `here()` in a `context` block
