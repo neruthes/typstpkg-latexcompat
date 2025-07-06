@@ -20,19 +20,23 @@
 
 // document metadata
 #title[Example Document 01]
-#author[Developers of LaTeXCompat Package for Typst]
-#date[2025-07-05]
+#author[Developers of LaTeXCompat Package for Typst, namely:\
+Neruthes]
+#date[#today()]
 
 
 // begin document
 
 #maketitle()
 
+
+#section(numbered: false)[Abstract]
+
 You can #textbf[
   bold Text using
   #texttt[textbf] and
-  #textmd[unbold text inside content block context using #texttt[textmd]]
-]. So cool!
+  #textmd[unbold text inside content block context using #texttt[textmd]]].
+  So cool!
 
 
 
@@ -54,15 +58,15 @@ Test: #texttt[texttt for monospace font]
 
 #subsection[Using bfseries and mdseries]
 
-#[Use #texttt[bfseries] #bfseries(); to bold text on the fly
+Use #texttt[bfseries] #bfseries(); to bold text on the fly
 and use #mdseries(); #texttt[mdseries] to unbold on the fly
-without creating tree depth.]
+without creating tree depth.
 
 #subsection[Using itshape and upshape]
 
-#[Use #texttt[itshape] #itshape(); to "italic" text on the fly
+Use #texttt[itshape] #itshape(); to "italic" text on the fly
 and use #upshape(); #texttt[upshape] to "normal" on the fly
-without creating tree depth.]
+without creating tree depth.
 
 #subsection[Deeper Nesting]
 

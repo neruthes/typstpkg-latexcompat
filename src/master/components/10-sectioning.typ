@@ -9,9 +9,9 @@
 #let fontspec_spacing_pre_h3 = state("fontspec_spacing_pre_h3", 0.3em)
 
 // Font size
-#let fontspec_fontsize_h1 = state("fontspec_fontsize_h1", 1.4em)
-#let fontspec_fontsize_h2 = state("fontspec_fontsize_h2", 1.15em)
-#let fontspec_fontsize_h3 = state("fontspec_fontsize_h3", 1.05em)
+#let fontspec_fontsize_h1 = state("fontspec_fontsize_h1", 1.35em)
+#let fontspec_fontsize_h2 = state("fontspec_fontsize_h2", 1.12em)
+#let fontspec_fontsize_h3 = state("fontspec_fontsize_h3", 1.0em)
 
 // Font weight
 #let fontspec_h1_style = state("fontspec_h1_style", 121)
@@ -28,7 +28,7 @@
   text(size: fontspec_fontsize_h1.get(), [#_fontspec_super_text_styler(fontspec_h1_style.get(), [
       #if (numbered) {
         counter(heading).step(level: 1)
-        [#context {counter(heading).display()}. ]
+        box(width: 36pt)[#context { counter(heading).display() }. ]
       }
       #content
     ])])
@@ -38,7 +38,7 @@
   text(size: fontspec_fontsize_h2.get(), [#_fontspec_super_text_styler(fontspec_h2_style.get(), [
       #if (numbered) {
         counter(heading).step(level: 2)
-        [#context {counter(heading).display()}; ]
+        box(width: 36pt)[#context { counter(heading).display() }. ]
       }
       #content
     ])])
@@ -48,7 +48,7 @@
   text(size: fontspec_fontsize_h3.get(), [#_fontspec_super_text_styler(fontspec_h3_style.get(), [
       #if (numbered) {
         counter(heading).step(level: 3)
-        [#context {counter(heading).display()}; ]
+        box(width: 36pt + 12pt)[#context { counter(heading).display() }. ]
       }
       #content
     ])])
