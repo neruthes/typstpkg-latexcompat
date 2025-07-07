@@ -1,5 +1,7 @@
 # LaTeXCompat
 
+[Manual PDF](https://pub-714f8d634e8f451d9f2fe91a4debfa23.r2.dev/typstpkg-latexcompat/a9b6643deb6c286009c7f6aa/LaTeXCompat-Manual.pdf)
+
 LaTeX compatibility commands within Typst.
 
 

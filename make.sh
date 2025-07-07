@@ -23,6 +23,9 @@ case "$1" in
         command -v typst || _die 1 "ERROR: Make target 'install_local' requires typst"
         typst c --root . "$1"
         ;;
+    docs/*.typ )
+        typst c --root . "$1"
+        ;;
     install_local )
         command -v tomlq || _die 1 "ERROR: Make target 'install_local' requires tomlq"
         command -v rsync || _die 1 "ERROR: Make target 'install_local' requires rsync"
@@ -32,7 +35,6 @@ case "$1" in
     fast )
         ./make.sh src/
         ./make.sh install_local
-        ./make.sh examples/*.typ
         ;;
     '' )
         ./make.sh src/
