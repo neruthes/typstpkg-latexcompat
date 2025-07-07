@@ -24,32 +24,38 @@
 
 
 #let section(numbered: true, content) = context {
-  v(fontspec_spacing_pre_h1.get())
-  text(size: fontspec_fontsize_h1.get(), [#_fontspec_super_text_styler(fontspec_h1_style.get(), [
-      #if (numbered) {
-        counter(heading).step(level: 1)
-        box(width: 36pt)[#context { counter(heading).display() }. ]
-      }
-      #content
-    ])])
+  block({
+    v(fontspec_spacing_pre_h1.get())
+    text(size: fontspec_fontsize_h1.get(), [#_fontspec_super_text_styler(fontspec_h1_style.get(), [
+        #if (numbered) {
+          counter(heading).step(level: 1)
+          box(width: 36pt)[#context { counter(heading).display() }. ]
+        }
+        #content
+      ])])
+  })
 }
 #let subsection(numbered: true, content) = context {
-  v(fontspec_spacing_pre_h2.get())
-  text(size: fontspec_fontsize_h2.get(), [#_fontspec_super_text_styler(fontspec_h2_style.get(), [
-      #if (numbered) {
-        counter(heading).step(level: 2)
-        box(width: 36pt)[#context { counter(heading).display() }. ]
-      }
-      #content
-    ])])
+  block({
+    v(fontspec_spacing_pre_h2.get())
+    text(size: fontspec_fontsize_h2.get(), [#_fontspec_super_text_styler(fontspec_h2_style.get(), [
+        #if (numbered) {
+          counter(heading).step(level: 2)
+          box(width: 36pt)[#context { counter(heading).display() }. ]
+        }
+        #content
+      ])])
+  })
 }
 #let subsubsection(numbered: true, content) = context {
-  v(fontspec_spacing_pre_h3.get())
-  text(size: fontspec_fontsize_h3.get(), [#_fontspec_super_text_styler(fontspec_h3_style.get(), [
-      #if (numbered) {
-        counter(heading).step(level: 3)
-        box(width: 36pt + 12pt)[#context { counter(heading).display() }. ]
-      }
-      #content
-    ])])
+  block({
+    v(fontspec_spacing_pre_h3.get())
+    text(size: fontspec_fontsize_h3.get(), [#_fontspec_super_text_styler(fontspec_h3_style.get(), [
+        #if (numbered) {
+          counter(heading).step(level: 3)
+          box(width: 36pt + 12pt)[#context { counter(heading).display() }. ]
+        }
+        #content
+      ])])
+  })
 }
