@@ -27,14 +27,14 @@ cd typstpkg-latexcompat && ./make.sh fast
 
 ## Features
 
-## Document Metadata
+### Document Metadata
 
 - `#title[My Title]`
 - `#author[Author Name]`
 - `#date[2023-04-26]`
 - `#maketitle();`
 
-## Section Headings
+### Section Headings
 
 - Numbered:
   - `#section[...]`
