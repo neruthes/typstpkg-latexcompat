@@ -1,12 +1,6 @@
 // #import "../src/master/latexcompat.typ": *
 #import "@local/latexcompat:0.1.0": *
-#show text: documentclass();
-// documentclass should return a lambda which is equivalent to...
-// #show text: it => context {
-//   set text(weight: if fontspec_flag_bf.at(here()) { "bold" } else { "regular" }) if (fontspec_flag_bf.get() != none)
-//   set text(style: if fontspec_flag_it.at(here()) { "italic" } else { "normal" }) if (fontspec_flag_it.get() != none)
-//   it
-// }
+#documentclass();
 
 #set text(font: ("Latin Modern Roman", "Noto Serif CJK SC"), size: 11pt)
 

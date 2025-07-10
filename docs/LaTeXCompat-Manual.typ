@@ -1,5 +1,5 @@
 #import "../src/master/latexcompat.typ": *
-#show text: documentclass();
+#documentclass();
 
 #set par(justify: true)
 #set text(font: ("Latin Modern Roman", "Noto Serif CJK SC"), size: 11pt)
