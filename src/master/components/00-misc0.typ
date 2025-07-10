@@ -5,7 +5,7 @@
 
 
 #let LaTeX() = {
-  box({
+  box(baseline: 24%, {
     [L]
     h(-0.2em)
     box(baseline: -33%, text(size: 0.75em)[A])

@@ -1,7 +1,7 @@
 #import "../src/master/latexcompat.typ": *
 #show text: documentclass();
 
-
+#set par(justify: true)
 #set text(font: ("Latin Modern Roman", "Noto Serif CJK SC"), size: 11pt)
 // fontspec
 #setromanfont(("Latin Modern Roman", "Noto Serif CJK SC"))
@@ -9,7 +9,7 @@
 #setmonofont(("JetBrains Mono NL", "Noto Sans CJK SC"))
 
 // sectsty
-#fontspec_h1_style.update(221)
+#sectsty_h1_style.update(221)
 
 // document metadata
 #title[LaTeXCompat Manual]
@@ -28,7 +28,7 @@
 #let indented_block(content) = context {
   let left_margin = 40pt
   block(
-    width: 100% - left_margin,
+    width: 100%,
     inset: (left: left_margin),
     breakable: true,
     content,
@@ -81,27 +81,27 @@ This package affords familiar symbols for Typst users with #LaTeX(); background.
   \#textsf[...]
 ]
 
-#indented_block[Use the defined sans-serif font for enclosed content.]
+#indented_block[Use the defined #textsf[sans-serif] font for enclosed content.]
 
 #cmdname[
   \#texttt[...]
 ]
 
-#indented_block[Use the defined monospace font for enclosed content.]
+#indented_block[Use the defined #texttt[monospace] font for enclosed content.]
 
 #cmdname[
   \#mdseries();\
   \#bfseries();
 ]
 
-#indented_block[Change font weight (regular, bold) on the fly in the current context.]
+#indented_block[Change font weight (regular, #textbf[bold]) on the fly in the current context.]
 
 #cmdname[
   \#upshape();\
   \#itshape();
 ]
 
-#indented_block[Change font style (normal, italic) on the fly in the current context.]
+#indented_block[Change font style (normal, #textit[italic]) on the fly in the current context.]
 
 #cmdname[
   \#\_fontspec_super_text_styler(mask, [...]);
@@ -112,5 +112,19 @@ You can pass a 3-digit integer as styling mask. \
 The digit for 1e2 can be 1/2/3, meaning serif/sans-serif/monospace. \
 The digit for 1e1 can be 1/2, meaning regular/bold. \
 The digit for 1e0 can be 1/2, meaning normal/italic. \
-For example, mask value 312 means monospace regular italic.
+For example, mask value 312 means #_fontspec_super_text_styler(312)[monospace regular italic].
 ]
+
+
+
+
+#section[datetime2]
+
+#cmdname[
+  \#today();
+]
+
+#indented_block[
+  Prints the current date as YYYY-MM-DD. Example: #today();.
+]
+

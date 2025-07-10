@@ -1,4 +1,4 @@
 
 // xcolor
-#let pagecolor(fill: color) = set page(fill: fill)
+#let pagecolor(fill_color) = context { set page(fill: fill_color) }
 
