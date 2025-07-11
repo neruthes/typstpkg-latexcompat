@@ -134,7 +134,7 @@
 
 
 // Miscellaneous...
-#let hrulefill() = box(width: 1fr, stroke: (bottom: black))
+#let hrulefill() = box(width: 1fr, stroke: (bottom: 0.4pt + black))
 
 
 #let LaTeX() = {
@@ -149,6 +149,19 @@
     h(-0.05em)
     [X]
   })
+}
+
+
+#let hspace(width) = context {
+  box(width: width, repeat(sym.space.nobreak))
+}
+
+
+#let fboxsep = state("fboxsep", 0.4em)
+#let fboxrule = state("fboxrule", 0.4pt)
+#let fboxcolor = state("fboxcolor", black)
+#let fbox(content) = context {
+  box(stroke: fboxrule.get() + fboxcolor.get(), inset: fboxsep.get(), baseline: fboxsep.get(), content)
 }
 // If local force >= global threshold, insert force break
 // Use to toggle manual pagebreaks
@@ -283,12 +296,6 @@
       ])])
   })
 }
-#let documentclass = () => {
-  return it => context {
-    set text(weight: if fontspec_flag_bf.get() { "bold" } else { "regular" }) if (fontspec_flag_bf.get() != none)
-    set text(style: if fontspec_flag_it.get() { "italic" } else { "normal" }) if (fontspec_flag_it.get() != none)
-    it
-  }
+
+#let documentclass() = context {
 }
-
-

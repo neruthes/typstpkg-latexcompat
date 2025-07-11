@@ -104,7 +104,7 @@ This package affords familiar symbols for Typst users with #LaTeX(); background.
 #indented_block[Change font style (normal, #textit[italic]) on the fly in the current context.]
 
 #cmdname[
-  \#\_fontspec_super_text_styler(mask, [...]);
+  \#\_fontspec_super_text_styler(mask, #fbox[content]);
 ]
 
 #indented_block[Internally, this function is used to implement styling.
@@ -127,4 +127,48 @@ For example, mask value 312 means #_fontspec_super_text_styler(312)[monospace re
 #indented_block[
   Prints the current date as YYYY-MM-DD. Example: #today();.
 ]
+
+
+
+
+
+
+
+#section[Miscellaneous]
+
+#cmdname[
+  \#hspace(width: #fbox[length]);
+]
+
+#indented_block[
+  If you use \#h(1em) inside \#underline, you get #underline[some stuff like#h(1em)this].
+  To avoid this, use \#hspace(1em) to get #underline[stuff like#hspace(1em)this].
+]
+
+
+#cmdname[
+  \#fbox(#fbox[content]); \
+  \#fboxrule.update(#[length || 0.4pt]); \
+  \#fboxsep.update(#[length || 0.4em]); \
+  \#fboxcolor.update(#[color || black]);
+]
+
+#indented_block[
+  Creates an inline #fbox[surrounding box].
+  You can change
+  #fboxcolor.update(red)
+  #fbox[fboxcolor] to change box rule color,
+  #fboxcolor.update(black)
+  change
+  #fboxrule.update(0.8pt)
+  #fbox[fboxrule] to change box rule stroke width,
+  #fboxrule.update(0.4pt)
+  and change 
+  #fboxsep.update(0.11em)
+  #fbox[fboxsep] to change inner spacing.
+  #fboxsep.update(0.11em)
+]
+
+
+
 
