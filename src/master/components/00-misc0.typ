@@ -30,3 +30,8 @@
 #let fbox(content) = context {
   box(stroke: fboxrule.get() + fboxcolor.get(), inset: fboxsep.get(), baseline: fboxsep.get(), content)
 }
+
+
+
+
+

@@ -163,6 +163,11 @@
 #let fbox(content) = context {
   box(stroke: fboxrule.get() + fboxcolor.get(), inset: fboxsep.get(), baseline: fboxsep.get(), content)
 }
+
+
+
+
+
 // If local force >= global threshold, insert force break
 // Use to toggle manual pagebreaks
 // force=0 && threshold=1, for identifying which tries need to be forced
@@ -295,6 +300,12 @@
         #content
       ])])
   })
+}
+// Enabled this show rule to fix CJK punct width
+#let CJK_PunctStylePlain(doc) = {
+  show regex("[，。、]"): it => box(width: 1em, align(left, it))
+  show regex("[！？；：（）【】「」『』❲❳［］]"): it => box(width: 1em, align(center, it))
+  doc
 }
 
 #let documentclass() = context {
