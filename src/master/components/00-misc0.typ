@@ -1,10 +1,10 @@
 
 
 // Miscellaneous...
-#let hrulefill() = box(width: 1fr, stroke: (bottom: 0.4pt + black))
+#let hrulefill = box(width: 1fr, stroke: (bottom: 0.4pt + black))
 
 
-#let LaTeX() = {
+#let LaTeX = context {
   box(baseline: 24%, {
     [L]
     h(-0.2em)

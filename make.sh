@@ -17,11 +17,11 @@ fi
 case "$1" in
     pr | submit) 
         VER="$(tomlq -r .package.version src/master/typst.toml)"
-        universe_dir_pref=../typst-packages-universe/packages/preview/latexcompat
-        universe_dir=../typst-packages-universe/packages/preview/latexcompat/"$VER"
+        universe_dir_pref=../typst-packages-universe/packages/preview/latex-compat
+        universe_dir=../typst-packages-universe/packages/preview/latex-compat/"$VER"
         [[ -d ../typst-packages-universe ]] &&
         [[ -d "$universe_dir_pref" ]] &&
-        [[ ! -d "$universe_dir" ]] &&
+        # [[ ! -d "$universe_dir" ]] &&
         rsync --dry-run -av ./src/master/ --exclude components "$universe_dir/" &&
         echo "Seems that we can do this!" &&
         echo '    ' rsync -av ./src/master/ --exclude components "$universe_dir/"

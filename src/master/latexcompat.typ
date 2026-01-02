@@ -134,10 +134,10 @@
 
 
 // Miscellaneous...
-#let hrulefill() = box(width: 1fr, stroke: (bottom: 0.4pt + black))
+#let hrulefill = box(width: 1fr, stroke: (bottom: 0.4pt + black))
 
 
-#let LaTeX() = {
+#let LaTeX = context {
   box(baseline: 24%, {
     [L]
     h(-0.2em)
@@ -168,26 +168,6 @@
 
 
 
-// If local force >= global threshold, insert force break
-// Use to toggle manual pagebreaks
-// force=0 && threshold=1, for identifying which tries need to be forced
-#let _pagebreak_trypagebreak_force_threshold = state("_pagebreak_trypagebreak_force_threshold", 1)
-
-// To find which trypagebreaks are really necessary...
-#let stopalltrypagebreak() = context _pagebreak_trypagebreak_force_threshold.update(999)
-
-
-// Set this local override as an alternative way to supply "force" param to trypagebreak
-// Not sure whether useful...
-#let _trypagebreak_force_local_override = state("_trypagebreak_force_local_override", 0)
-
-
-#let trypagebreak(force: 0) = context {
-  let real_local_value = calc.max(force, _trypagebreak_force_local_override.get())
-  if (real_local_value >= _pagebreak_trypagebreak_force_threshold.get()) {
-    pagebreak()
-  }
-}
 
 // xcolor
 #let pagecolor(fill_color) = context { set page(fill: fill_color) }
@@ -307,6 +287,27 @@
   show regex("[！？；：（）【】「」『』❲❳［］]"): it => box(width: 1em, align(center, it))
   doc
 }
+#let __state_documentclass_params = state("__state_documentclass_params", ())
 
-#let documentclass() = context {
+
+#let documentclass(..params) = {
+  let _docinit(doc) = {
+    // Define defaults
+    let defaults = (fontsize: 10pt, font: "Latin Modern Roman")
+
+    // Merge user params into defaults
+    // .named() extracts only the key-value pairs from the arguments
+    let final_params = defaults + params.named()
+
+    __state_documentclass_params.update(final_params)
+
+    context {
+      let current = __state_documentclass_params.get()
+      set text(size: current.fontsize, font: current.font)
+      doc
+    }
+  }
+  return _docinit
 }
+// In using:
+// #show: documentclass(fontsize: 10pt)

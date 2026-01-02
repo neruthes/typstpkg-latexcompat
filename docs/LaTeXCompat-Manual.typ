@@ -1,5 +1,5 @@
 #import "../src/master/latexcompat.typ": *
-#documentclass();
+#show: documentclass();
 
 #set par(justify: true)
 #set text(font: ("Latin Modern Roman", "Noto Serif CJK SC"), size: 11pt)
@@ -44,7 +44,7 @@
 
 
 #section(numbered: false)[Abstract]
-This package affords familiar symbols for Typst users with #LaTeX(); background.
+This package affords familiar symbols for Typst users with #LaTeX background.
 
 
 
