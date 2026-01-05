@@ -28,7 +28,6 @@ case "$1" in
 
         ;;
     src/ )
-        # rsync -avpx src/master/ latexcompat/
         cat src/master/components/*.typ > src/master/latexcompat.typ
         ;;
     examples/*.typ )
@@ -42,7 +41,7 @@ case "$1" in
         command -v tomlq || _die 1 "ERROR: Make target 'install_local' requires tomlq"
         command -v rsync || _die 1 "ERROR: Make target 'install_local' requires rsync"
         VER="$(tomlq -r .package.version src/master/typst.toml)"
-        rsync -auv --delete --mkpath src/master/ "$HOME"/.local/share/typst/packages/local/latexcompat/"$VER"
+        rsync -auv --delete --mkpath src/master/ "$HOME"/.local/share/typst/packages/local/latex-compat/"$VER"
         ;;
     fast )
         ./make.sh src/
